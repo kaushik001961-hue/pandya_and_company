@@ -1,0 +1,62 @@
+import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
+
+export default function ContactInfo() {
+  const items = [
+    {
+      icon: Phone,
+      title: "Call Us",
+      value: "+91 98765 43210",
+    },
+    {
+      icon: Mail,
+      title: "Email",
+      value: "info@pandyaandcompany.com",
+    },
+    {
+      icon: MapPin,
+      title: "Office",
+      value: "Your Office Address",
+    },
+    {
+      icon: MessageCircle,
+      title: "WhatsApp",
+      value: "+91 98765 43210",
+    },
+  ];
+
+  return (
+    <section className="py-20 bg-slate-950">
+
+      <div className="max-w-7xl mx-auto px-6">
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+          {items.map((item) => {
+            const Icon = item.icon;
+
+            return (
+              <div
+                key={item.title}
+                className="bg-slate-900 rounded-3xl p-8 border border-white/10"
+              >
+                <Icon className="text-blue-400 w-10 h-10" />
+
+                <h3 className="text-white text-xl font-bold mt-6">
+                  {item.title}
+                </h3>
+
+                <p className="text-slate-300 mt-4">
+                  {item.value}
+                </p>
+
+              </div>
+            );
+          })}
+
+        </div>
+
+      </div>
+
+    </section>
+  );
+}
