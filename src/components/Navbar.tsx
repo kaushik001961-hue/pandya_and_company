@@ -1,5 +1,5 @@
-<div style={{ color: "red", fontSize: 40 }}>
-  NAVBAR UPDATED TEST
+<div style={{ color: "red", fontSize: "30px" }}>
+  NAVBAR LIVE TEST
 </div>
 
 "use client";
