@@ -67,7 +67,7 @@ export default function Hero() {
               </Link>
 
               <a
-                href="tel:+919876543210"
+                href="tel:+919426948661"
                 className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-xl border border-white/40 bg-white/10 px-6 sm:px-8 py-3.5 sm:py-4 font-semibold text-white backdrop-blur-md transition hover:bg-white/20 text-sm sm:text-base"
               >
                 <Phone size={18} />
@@ -75,7 +75,7 @@ export default function Hero() {
               </a>
 
               <a
-                href="https://wa.me/919876543210"
+                href="https://wa.me/919426948661"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-xl border border-green-400 bg-green-500 px-6 sm:px-8 py-3.5 sm:py-4 font-semibold text-white transition hover:bg-green-600 text-sm sm:text-base"
