@@ -5,7 +5,7 @@ export default function ContactInfo() {
     {
       icon: Phone,
       title: "Call Us",
-      value: "+91 98765 43210",
+      value: "+91 9426948661",
     },
     {
       icon: Mail,
@@ -20,7 +20,7 @@ export default function ContactInfo() {
     {
       icon: MessageCircle,
       title: "WhatsApp",
-      value: "+91 98765 43210",
+      value: "+91 9426948661",
     },
   ];
 
