@@ -10,7 +10,7 @@ export default function ContactInfo() {
     {
       icon: Mail,
       title: "Email",
-      value: "info@pandyaandcompany.com",
+      value: "kppandya0011@gmail.com",
     },
     {
       icon: MapPin,
