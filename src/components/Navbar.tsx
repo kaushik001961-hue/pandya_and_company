@@ -1,7 +1,3 @@
-<div style={{ color: "red", fontSize: "30px" }}>
-  NAVBAR LIVE TEST
-</div>
-
 "use client";
 
 import Image from "next/image";

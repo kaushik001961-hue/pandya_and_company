@@ -10,10 +10,10 @@ import Team from "@/components/Team";
 import FAQ from "@/components/FAQ";
 import ContactCTA from "@/components/ContactCTA";
 
-
 export default function Home() {
   return (
-    <main className="bg-slate-950 text-white">
+    // 🚀 FIXED: Added layout clipping classes to protect the mobile viewport boundaries
+    <main className="bg-slate-950 text-white w-full overflow-x-hidden">
       <Hero />
       <AboutSection />
       <Stats />
