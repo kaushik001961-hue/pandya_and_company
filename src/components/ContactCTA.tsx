@@ -90,7 +90,7 @@ export default function ContactCTA() {
             </a>
 
             <a
-              href="https://wa.me/919876543210"
+              href="https://wa.me/+919426948661"
               target="_blank"
               className="
                 border
@@ -115,12 +115,12 @@ export default function ContactCTA() {
 
             <div className="flex items-center gap-2">
               <Mail size={18} />
-              info@pandyaandcompany.com
+              kppandya0011@gmail.com
             </div>
 
             <div className="flex items-center gap-2">
               <Phone size={18} />
-              +91 98765 43210
+              +91 94269 48661
             </div>
 
           </div>
