@@ -2,19 +2,21 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Home, User, Briefcase, Calculator, Phone } from "lucide-react";
 
 export default function Navbar() {
+  const pathname = usePathname();
+
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState("home");
   const [hidden, setHidden] = useState(false);
   const [shrink, setShrink] = useState(false);
 
   const clickSound = useRef<HTMLAudioElement | null>(null);
 
-  // 🔊 create click sound once
+  // 🔊 safe click sound
   useEffect(() => {
     clickSound.current = new Audio(
       "https://actions.google.com/sounds/v1/cartoon/pop.ogg"
@@ -22,13 +24,12 @@ export default function Navbar() {
   }, []);
 
   const playClick = () => {
-    if (clickSound.current) {
-      clickSound.current.currentTime = 0;
-      clickSound.current.play();
-    }
+    try {
+      clickSound.current?.play();
+    } catch {}
   };
 
-  // 🧠 scroll behavior (hide + shrink + spy)
+  // 🧠 scroll behavior (hide + shrink)
   useEffect(() => {
     let lastScroll = 0;
 
@@ -39,57 +40,45 @@ export default function Navbar() {
       setHidden(scrollY > lastScroll && scrollY > 120);
 
       lastScroll = scrollY;
-
-      const sections = ["home", "about", "services", "calculator", "contact"];
-
-      sections.forEach((id) => {
-        const el = document.getElementById(id);
-        if (!el) return;
-
-        const rect = el.getBoundingClientRect();
-
-        if (rect.top <= 160 && rect.bottom >= 160) {
-          setActive(id);
-        }
-      });
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navItem = (id: string, label: string, icon: any) => (
-    <a
-      href={`#${id}`}
-      onClick={() => {
-        setActive(id);
-        playClick();
-        setOpen(false);
-      }}
-      className="relative flex items-center gap-2 px-4 py-2 text-white group"
-    >
-      {icon}
+  // ✅ NAV LINK
+  const navLink = (href: string, label: string, Icon: any) => {
+    const isActive = pathname === href;
 
-      <span>{label}</span>
+    return (
+      <Link
+        href={href}
+        onClick={() => {
+          setOpen(false);
+          playClick();
+        }}
+        className={`relative flex items-center gap-2 px-3 py-2 transition
+          ${isActive ? "text-yellow-300 font-semibold" : "text-white hover:text-yellow-200"}
+        `}
+      >
+        <Icon size={16} />
 
-      {/* 🌈 neon glow active indicator */}
-      {active === id && (
-        <motion.span
-          layoutId="activeGlow"
-          className="absolute bottom-0 left-0 w-full h-[2px]
-          bg-gradient-to-r from-yellow-300 via-pink-400 to-purple-400
-          shadow-[0_0_10px_rgba(255,255,255,0.8)]"
-        />
-      )}
+        <span>{label}</span>
 
-      {/* hover underline */}
-      <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-white group-hover:w-full transition-all duration-300" />
-    </a>
-  );
+        {/* glowing active underline */}
+        {isActive && (
+          <motion.div
+            layoutId="activeIndicator"
+            className="absolute left-0 bottom-0 h-[2px] w-full bg-gradient-to-r from-yellow-300 via-pink-400 to-purple-400 shadow-[0_0_10px_rgba(255,255,255,0.8)]"
+          />
+        )}
+      </Link>
+    );
+  };
 
   return (
     <>
-      {/* 🎥 animated gradient background */}
+      {/* NAVBAR */}
       <motion.nav
         animate={{
           y: hidden ? -120 : 0,
@@ -100,9 +89,7 @@ export default function Navbar() {
         className="
           sticky top-0 z-50
           bg-gradient-to-r from-[#0a1a4a] via-[#233B8B] to-[#6D4CC9]
-          bg-[length:200%_200%]
-          animate-gradientMove
-          backdrop-blur-2xl
+          backdrop-blur-xl
           border-b border-white/10
           shadow-xl
         "
@@ -110,43 +97,46 @@ export default function Navbar() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 md:px-8">
 
           {/* LEFT */}
-          <Link href="#home" className="flex items-center gap-3">
-            <Image
-              src="/logo.png"
-              alt="logo"
-              width={70}
-              height={70}
-              className="object-contain"
-            />
+          <Link href="/" onClick={playClick} className="flex items-center gap-3">
+            <div className="relative w-[45px] h-[45px] md:w-[65px] md:h-[65px] rounded-full overflow-hidden border border-white/20">
+              <Image
+                src="/logo.png"
+                alt="logo"
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
 
             <div>
-              <h1 className="text-white font-bold text-xl">
+              <h1 className="text-white font-bold text-lg md:text-xl">
                 Pandya & Company
               </h1>
-              <p className="text-white/60 text-sm hidden md:block">
+              <p className="text-white/60 text-xs md:text-sm hidden md:block">
                 CA & Financial Consultancy
               </p>
             </div>
           </Link>
 
-          {/* DESKTOP */}
-          <div className="hidden lg:flex items-center gap-2">
-            {navItem("home", "Home", <Home size={16} />)}
-            {navItem("about", "About", <User size={16} />)}
-            {navItem("services", "Services", <Briefcase size={16} />)}
-            {navItem("calculator", "Calculator", <Calculator size={16} />)}
-            {navItem("contact", "Contact", <Phone size={16} />)}
+          {/* DESKTOP MENU */}
+          <div className="hidden lg:flex items-center gap-6">
+            {navLink("/", "Home", Home)}
+            {navLink("/about", "About", User)}
+            {navLink("/services", "Services", Briefcase)}
+            {navLink("/calculator", "Calculator", Calculator)}
+            {navLink("/contact", "Contact", Phone)}
           </div>
 
           {/* CTA */}
-          <button
-            onClick={() => playClick()}
-            className="hidden lg:block bg-white text-[#233B8B] px-6 py-2 rounded-full font-semibold hover:scale-105 transition"
+          <Link
+            href="/contact"
+            onClick={playClick}
+            className="hidden lg:inline-block bg-white text-[#233B8B] px-6 py-2 rounded-full font-semibold hover:scale-105 transition"
           >
             Get Consultation
-          </button>
+          </Link>
 
-          {/* MOBILE */}
+          {/* MOBILE BUTTON */}
           <button
             onClick={() => {
               setOpen(!open);
@@ -162,39 +152,33 @@ export default function Navbar() {
         <AnimatePresence>
           {open && (
             <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="lg:hidden backdrop-blur-xl bg-white/10 border-t border-white/10 px-6 py-4"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="lg:hidden overflow-hidden bg-white/10 backdrop-blur-xl border-t border-white/10"
             >
-              <div className="flex flex-col gap-3">
-                {navItem("home", "Home", <Home size={16} />)}
-                {navItem("about", "About", <User size={16} />)}
-                {navItem("services", "Services", <Briefcase size={16} />)}
-                {navItem("calculator", "Calculator", <Calculator size={16} />)}
-                {navItem("contact", "Contact", <Phone size={16} />)}
+              <div className="flex flex-col gap-3 px-6 py-4">
+                {navLink("/", "Home", Home)}
+                {navLink("/about", "About", User)}
+                {navLink("/services", "Services", Briefcase)}
+                {navLink("/calculator", "Calculator", Calculator)}
+                {navLink("/contact", "Contact", Phone)}
+
+                <Link
+                  href="/contact"
+                  onClick={() => {
+                    setOpen(false);
+                    playClick();
+                  }}
+                  className="mt-2 bg-white text-[#233B8B] px-4 py-2 rounded-full text-center font-semibold"
+                >
+                  Get Consultation
+                </Link>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
       </motion.nav>
-
-      {/* 🎥 CSS ANIMATION (add to globals.css) */}
-      <style jsx global>{`
-        @keyframes gradientMove {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-
-        .animate-gradientMove {
-          animation: gradientMove 8s ease infinite;
-        }
-
-        html {
-          scroll-behavior: smooth;
-        }
-      `}</style>
     </>
   );
 }
