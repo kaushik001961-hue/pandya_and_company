@@ -13,14 +13,15 @@ export default function Navbar() {
 
         <Link href="/" className="flex items-center gap-4">
 
-          <Image
-            src="/logo.png"
-            alt="Pandya & Company"
-            width={70}
-            height={70}
-            priority
-            className="object-contain"
-          />
+       <div className="w-[70px] h-[70px] rounded-full overflow-hidden border-4 border-red-500 bg-yellow-300">
+  <Image
+    src="/logo.png"
+    alt="Pandya & Company"
+    fill
+    priority
+    className="object-cover"
+  />
+</div>
 
           <div>
 
