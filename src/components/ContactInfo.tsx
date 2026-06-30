@@ -15,7 +15,7 @@ export default function ContactInfo() {
     {
       icon: MapPin,
       title: "Office",
-      value: "Your Office Address",
+      value: "S16- 30, RADHE CITY CENTER, BAPASITARAM CHOWK,TALAJA, DISTRICT - BHAVNAGAR, GUJARAT,PINCODE: 364140, INDIA.",
     },
     {
       icon: MessageCircle,
